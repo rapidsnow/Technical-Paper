@@ -173,75 +173,75 @@ Kepler 17
 %	\end{itemize}
 %\vspace{9mm}
 %
-%\section{Possible Figures \label{figures}}
-%	\begin{enumerate}
-%		\item Brightness maps
-%		\item Model lightcurve fits
-%		\item \hilight{Transit starspot bumps (TrES-1 Cartoon)}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{k17trans.png}
-%				\caption{Raw data k17.}
-%				\label{k17trans}
-%			\end{figure}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{tres1hst.jpg}
-%				\caption{Geometry of eclipse path visibility.}
-%				\label{tres1}
-%			\end{figure}
-%		\item  \hilight{CoRoT brightness map}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{modelGeometry.png}
-%				\caption{CoRoT brightness map.}
-%				\label{CoRoT}
-%			\end{figure}
-%		\item  \hilight{Figure showing angles that are discussed}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{angles.png}
-%				\caption{Angles.}
-%				\label{angles}
-%			\end{figure}
-%		\item  \hilight{Geometry of eclipse path visibility calculations}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{figure.png}
-%				\caption{Geometry of eclipse path visibility.}
-%				\label{eclipse}
-%			\end{figure}
-%		\item \hilight{Visibility Plots}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{box_vis.png}
-%				\caption{The visibility of one box during one window.}
-%				\label{box}
-%			\end{figure}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{sum_vis.png}
-%				\caption{Overall visibilities for a window.} 
-%				\label{sum_vis}
-%			\end{figure}
-%		\item Stripes over time
-%		\item Boxes over time
-%		\item Errors and residuals
-%		\item  \hilight{Simplex}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{simplex.png}
-%				\caption{Simplex.}
-%				\label{simplex}
-%			\end{figure}
-%		\item Unbinned vs. binned lightcurves
-%		\item \hilight{Noise in the models}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{12_noise.png}
-%				\caption{Example of Gaussian noise in a model.}
-%				\label{noise}
-%			\end{figure}
-%		\item \ldots?
-%	\end{enumerate}
+\section{Possible Figures \label{figures}}
+	\begin{enumerate}
+		\item Brightness maps
+		\item Model lightcurve fits
+		\item \hilight{Transit starspot bumps (TrES-1 Cartoon)}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/k17trans.png}
+				\caption{One transit from the actual Kepler 17 light curve. You can see the characteristic "bite" out of the transit curve where a starspot is likely occluded.}
+				\label{k17trans}
+			\end{figure}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/tres1hst.jpg}
+				\caption{A clear illustration of the effect of a starspot on a transit light curve. When the planet blocks the spot it is occluding a relatively less bright region of the star and the effective luminosity increases.}
+				\label{tres1}
+			\end{figure}
+		\item  \hilight{CoRoT brightness map}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/modelGeometry.png}
+				\caption{Example of a brightness map that is defined by our code. This image was taken from the first paper detailing this technique. It was done specifically on CoRoT 2.}
+				\label{CoRoT}
+			\end{figure}
+		\item  \hilight{Figure showing angles that are discussed}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/angles.png}
+				\caption{A reference image for the angles that are discussed in relation to the definition of visibility values on the star.}
+				\label{angles}
+			\end{figure}
+		\item  \hilight{Geometry of eclipse path visibility calculations}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/figure.png}
+				\caption{A simplified visualization of the geometry used in defining the eclipse path visibility of a system. The blue section is the important area for which we are solving.}
+				\label{eclipse}
+			\end{figure}
+		\item \hilight{Visibility Plots}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/box_vis.png}
+				\caption{The visibility of one box during one window. Note that the transit dips are not full transits, but only a portion of the transit while the planet is in front of that specific region.}
+				\label{box}
+			\end{figure}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{imags/sum_vis.png}
+				\caption{Overall visibilities for a window. The longitudes' visibility values are 1.0. The stripes are the next highest, but do not have transits in them. The boxes are the lowest values.} 
+				\label{sum_vis}
+			\end{figure}
+		\item Stripes over time
+		\item Boxes over time
+		\item Errors and residuals
+		\item  \hilight{Simplex}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/simplex.png}
+				\caption{The various operations that a simplex can use to "move downhill" in chi-squared space.}
+				\label{simplex}
+			\end{figure}
+		\item Unbinned vs. binned lightcurves
+		\item \hilight{Noise in the models}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=.5\textwidth]{images/12_noise.png}
+				\caption{Example of Gaussian noise in a model. This particular light curve part is one "window" in our model. It has a simulated noise similar to that of a Kepler 12th magnitude star.}
+				\label{noise}
+			\end{figure}
+		\item \ldots?
+	\end{enumerate}
 \end{document}
