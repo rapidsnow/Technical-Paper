@@ -218,12 +218,12 @@ Kepler 17
 				\caption{The visibility of one box during one window. Note that the transit dips are not full transits, but only a portion of the transit while the planet is in front of that specific region.}
 				\label{box}
 			\end{figure}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{imags/sum_vis.png}
-				\caption{Overall visibilities for a window. The longitudes' visibility values are 1.0. The stripes are the next highest, but do not have transits in them. The boxes are the lowest values.} 
-				\label{sum_vis}
-			\end{figure}
+%			\begin{figure}[h]
+%				\centering
+%				\includegraphics[width=.5\textwidth]{imags/sum_vis.png}
+%				\caption{Overall visibilities for a window. The longitudes' visibility values are 1.0. The stripes are the next highest, but do not have transits in them. The boxes are the lowest values.} 
+%				\label{sum_vis}
+%			\end{figure}
 		\item Stripes over time
 		\item Boxes over time
 		\item Errors and residuals
@@ -244,4 +244,64 @@ Kepler 17
 			\end{figure}
 		\item \ldots?
 	\end{enumerate}
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/rms_over_time.png}
+	\caption{RMS of the model light curve brightness inputs to the recovered value for each type of simulation over all windows}
+	\label{RMS}
+\end{figure}
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/1b/noise/region_plot.png}
+	\caption{Boxes over multiple trials for 1 box}
+	\label{1b/noise}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/1b/noise/stripes_over_time.png}
+	\caption{Stripes over multiple trials for 1 box}
+	\label{1b/noise/stripes}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/4b_3s/noise/region_plot.png}
+	\caption{Boxes over multiple trials for 4 boxes and 3 stripes}
+	\label{4b_3s/noise}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/4b_3s/noise/stripes_over_time.png}
+	\caption{Stripes over multiple trials for 4 boxes and 3 stripes}
+	\label{4b_3s/noise/stripes}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/3b_2s/noise/region_plot.png}
+	\caption{Boxes over multiple trials for 3 boxes and 2 stripes}
+	\label{3b_2s/noise}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/3b_2s/noise/stripes_over_time.png}
+	\caption{Stripes over multiple trials for 3 boxes and 2 stripes}
+	\label{3b_2s/noise/stripes}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/2b_2s/noise/region_plot.png}
+	\caption{Boxes over multiple trials for 2 boxes and 2 stripes}
+	\label{2b_2s/noise}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/2b_2s/noise/stripes_over_time.png}
+	\caption{Stripes over multiple trials for 2 boxes and 2 stripes}
+	\label{2b_2s/noise/stripes}
+\end{figure}
+	
 \end{document}
