@@ -26,26 +26,70 @@ I describe a C code that can read in time series photometry data of a transiting
 
 \section{Description of the Model \label{description}}
 Overall characterization of the necessary pieces of information. This includes terminology, geometry of a star in the general case, input parameters, model flux, limb darkening, and a description of the brightness values for which we are solving.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/k17trans.png}
+	\caption{One transit from the actual Kepler 17 light curve. You can see the characteristic "bite" out of the transit curve where a starspot is likely occluded.}
+	\label{k17trans}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/tres1hst.jpg}
+	\caption{A clear illustration of the effect of a starspot on a transit light curve. When the planet blocks the spot it is occluding a relatively less bright region of the star and the effective luminosity increases.}
+	\label{tres1}
+\end{figure}
+
 \subsection{Set-up and Terminology \label{description}}
 This section should give an overview of the three types of regions in our stellar brightness map: boxes, stripes, and longitudes. It should also describe why each of these types occupies the region of the star that it does.
 
-Figure [CoRoT brightness map]
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/modelGeometry.png}
+	\caption{Example of a brightness map that is defined by our code. This image was taken from the first paper detailing this technique. It was done specifically on CoRoT 2.}
+	\label{CoRoT}
+\end{figure}
+			
 \subsection{Describe the inputs to the program}
 	This section should describe the stellar input parameters, planetary input parameters, and the model input parameters.
 	This will be a relatively short and straight-forward section.
 
 \subsection{Model flux}
 	This section should describe the general case for \fmod. It should also talk about the specific variables, $V_{i,j}$ and $b_j$ and motivate the reason for the visibility calculations below. It should describe the timescale for the evolution of starspots and our decision to include "windowing" in our model. And finally, it should give a brief description of the Simplex algorithm.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/simplex.png}
+	\caption{The various operations that a simplex can use to "move downhill" in chi-squared space.}
+	\label{simplex}
+\end{figure}
 	
 \section{Visibility as a function of time}
 	This section should discuss all of the math involved in the visibility profile of a general case star.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/angles.png}
+	\caption{A reference image for the angles that are discussed in relation to the definition of visibility values on the star.}
+	\label{angles}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/figure.png}
+	\caption{A simplified visualization of the geometry used in defining the eclipse path visibility of a system. The blue section is the important area for which we are solving.}
+	\label{eclipse}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/box_vis.png}
+	\caption{The visibility of one box during one window. Note that the transit dips are not full transits, but only a portion of the transit while the planet is in front of that specific region.}
+	\label{box}
+\end{figure}
+
+	
 \subsection{Region Visibilities}
 	This should outline the rationale behind the integral used to calculate the projected surface area of each region. It should show the integral once and then show that for a box and a longitude, the $\theta$ limits are the only thing that change. It should also discuss the fact that the stripe visibilities are calculated within the Amoeba Algorithm and why (or I should change it in the code).
 	
 \subsection{Transiting Planet Model}
 	This section should discuss the idea that the planet is nothing more than a blocking of visibility while it is occluding the star. It should explain the basic geometry of this calculation and show the ten different cases involved.
-	
-	 - Figure[Example of a model transit and my model transit]
+
 \subsection{Limb Darkening}
 	The final visibility section will outline the limb darkening. Important facts to include are that we use a quadratic limb darkening equation, we include limb darkening both in and out-of-transit, and the specific math behind our calculations for each region (yay for analytically solving things).
 
@@ -59,199 +103,19 @@ Now that we have properly defined how our model works theoretically, we need to 
 	Give a description of the parameters that we still can mess with. For example, the number of stripes, number of boxes,  and binning cadences both in and out-of-transit.
 \subsection{Making the model light curves}
 	Describes the process of generating a model light curve and how, in our case, it was intrinsically linked to the stellar and planetary parameters of Kepler 17. It should briefly mention that I use a python script to generate Gaussian noise based on Kepler magnitude noise. It should also outline the list of spot models that we tried and our motivation for doing so.
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/12_noise.png}
+	\caption{Example of Gaussian noise in a model. This particular light curve part is one "window" in our model. It has a simulated noise similar to that of a Kepler 12th magnitude star.}
+	\label{noise}
+\end{figure}
 
 \subsection{Testing Complexity}
 We have only tested the ability of our program to solve for brightness values in two parameter spaces, complexity of the spots and noise of the light curve.
 
 \subsection{Results}
 Show plots (RMS, 2d boxes over time, stripes, etc.)
-
-\section{Application of our program to real data}
-Kepler 17
-
-
-
-
-
-
-
-
-
-
-
-
-%\subsection{Stellar Parameters \label{stellar}}
-%	\begin{itemize}
-%		\item Rotation Period
-%		\item Temperature (actually LD coeffs)
-%		\item BJD REFI
-%	\end{itemize}
-%\vspace{4mm}
-%
-%\subsection{Planetary Parameters \label{planet}}
-%	\begin{itemize}
-%		\item Orbital Period
-%		\item Orbital Separation
-%		\item Epoch
-%		\item Impact Parameter
-%		\item Transit Width
-%		\item $\frac{R_p}{R^{*}}$
-%	\end{itemize}
-%\vspace{4mm}
-%
-%\subsection{Model Specific Parameters \label{model}}
-%	\begin{itemize}
-%		\item Number of stripes
-%		\item Number of boxes
-%		\item In-transit binning cadence
-%		\item Out-of-transit binning cadence
-%		\item Regularization parameters
-%		\item Data type
-%		\item Days per window
-%		\item Days per window increment
-%	\end{itemize}
-%\vspace{9mm}
-%
-%\section{Model Lightcurves \label{lightcurves}}
-%Talk about \fmod
-%\subsection{Visibiities \label{visibilities}}
-%	\begin{itemize}
-%		\item $\hat{x}$
-%		\item $\mathrm{d} \Omega$
-%		\item Limits of integration
-%	\end{itemize}
-%\vspace{4mm}
-%
-%\subsection{Limb Darkening \label{ld|}}
-%	\begin{itemize}
-%		\item $\frac{I(\psi)}{I(0)} = 1 - \mu - $ \ldots
-%		\item $\mu = \hat{x}$
-%		\item Average over the regions with an integral
-%	\end{itemize}
-%\vspace{4mm}
-%
-%\subsection{Brightness Values \label{brights}}
-%	\begin{itemize}
-%		\item Initial scaling factor
-%		\item \chisq
-%			\begin{itemize}
-%				\item Weighting
-%				\item Normalization
-%					\begin{itemize}
-%						\item Box-to-box
-%						\item Stripe-to-stripe
-%						\item Box-to-stripe
-%					\end{itemize}
-%				\end{itemize}
-%			\item Simplex and Structure
-%			\item Amoeba Algorithm
-%	\end{itemize}
-%\vspace{9mm}
-%
-%\section{Information Content of Lightcurves \label{info}}
-%\vspace{4mm}
-%
-%\subsection{Latitude/Inclination Degeneracies \label{inclination}}
-%	\begin{itemize}
-%		\item Must be aligned
-%		\item Latitude only deciphered by transit
-%		\item Latitude is degenerate on whether it is upper or lower hemisphere
-%	\end{itemize}
-%\vspace{4mm}
-%
-%\subsection{Number of Regions \label{regions}}
-%	\begin{itemize}
-%		\item \chisq for stripes
-%		\item Information calculation for boxes
-%	\end{itemize}
-%\vspace{9mm}
-%
-%\section{Discussion and Future Work \label{future}}
-%	\begin{itemize}
-%		\item Alignment
-%		\item Application to future Systems
-%	\end{itemize}
-%\vspace{9mm}
-%
-\section{Possible Figures \label{figures}}
-	\begin{enumerate}
-		\item Brightness maps
-		\item Model lightcurve fits
-		\item \hilight{Transit starspot bumps (TrES-1 Cartoon)}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/k17trans.png}
-				\caption{One transit from the actual Kepler 17 light curve. You can see the characteristic "bite" out of the transit curve where a starspot is likely occluded.}
-				\label{k17trans}
-			\end{figure}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/tres1hst.jpg}
-				\caption{A clear illustration of the effect of a starspot on a transit light curve. When the planet blocks the spot it is occluding a relatively less bright region of the star and the effective luminosity increases.}
-				\label{tres1}
-			\end{figure}
-		\item  \hilight{CoRoT brightness map}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/modelGeometry.png}
-				\caption{Example of a brightness map that is defined by our code. This image was taken from the first paper detailing this technique. It was done specifically on CoRoT 2.}
-				\label{CoRoT}
-			\end{figure}
-		\item  \hilight{Figure showing angles that are discussed}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/angles.png}
-				\caption{A reference image for the angles that are discussed in relation to the definition of visibility values on the star.}
-				\label{angles}
-			\end{figure}
-		\item  \hilight{Geometry of eclipse path visibility calculations}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/figure.png}
-				\caption{A simplified visualization of the geometry used in defining the eclipse path visibility of a system. The blue section is the important area for which we are solving.}
-				\label{eclipse}
-			\end{figure}
-		\item \hilight{Visibility Plots}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/box_vis.png}
-				\caption{The visibility of one box during one window. Note that the transit dips are not full transits, but only a portion of the transit while the planet is in front of that specific region.}
-				\label{box}
-			\end{figure}
-%			\begin{figure}[h]
-%				\centering
-%				\includegraphics[width=.5\textwidth]{imags/sum_vis.png}
-%				\caption{Overall visibilities for a window. The longitudes' visibility values are 1.0. The stripes are the next highest, but do not have transits in them. The boxes are the lowest values.} 
-%				\label{sum_vis}
-%			\end{figure}
-		\item Stripes over time
-		\item Boxes over time
-		\item Errors and residuals
-		\item  \hilight{Simplex}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/simplex.png}
-				\caption{The various operations that a simplex can use to "move downhill" in chi-squared space.}
-				\label{simplex}
-			\end{figure}
-		\item Unbinned vs. binned lightcurves
-		\item \hilight{Noise in the models}
-			\begin{figure}[h]
-				\centering
-				\includegraphics[width=.5\textwidth]{images/12_noise.png}
-				\caption{Example of Gaussian noise in a model. This particular light curve part is one "window" in our model. It has a simulated noise similar to that of a Kepler 12th magnitude star.}
-				\label{noise}
-			\end{figure}
-		\item \ldots?
-	\end{enumerate}
-	
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=.5\textwidth]{images/rms_over_time.png}
-	\caption{RMS of the model light curve brightness inputs to the recovered value for each type of simulation over all windows}
-	\label{RMS}
-\end{figure}
-	
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=.5\textwidth]{images/1b/noise/region_plot.png}
@@ -303,5 +167,28 @@ Kepler 17
 	\caption{Stripes over multiple trials for 2 boxes and 2 stripes}
 	\label{2b_2s/noise/stripes}
 \end{figure}
-	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\textwidth]{images/rms_over_time.png}
+	\caption{RMS of the model light curve brightness inputs to the recovered value for each type of simulation over all windows}
+	\label{RMS}
+\end{figure}	
+
+\section{Application of our program to real data}
+Kepler 17
+
+
+
+
+
+\section{Possible Figures \label{figures}}
+	\begin{enumerate}
+		\item Brightness maps
+		\item Model lightcurve fits
+		\item Stripes over time
+		\item Boxes over time
+		\item Errors and residuals
+		\item Unbinned vs. binned lightcurves
+		\item \ldots?
+	\end{enumerate}
 \end{document}
