@@ -44,7 +44,7 @@ the total longitudinal regions will be called {\it longitudes};
 and the longitudinal regions with the box areas subtracted will be referred to as {\it stripes}.
 When talked about as an ensemble or when the distinction is unimportant, these regions will be referred to as just that - {\it regions}. 
 
-++++STOPPED HERE+++
+++++STOPPED HERE++++
 
 Typically, 
 
@@ -70,7 +70,7 @@ Our program calculates the model flux at each time step, by summing over the sur
 	\fmod = \sum_j V_{i,j}b_j, 
 \end{equation}
 
-where b_$j$ is the brightness per unit area for region $j$ and $V_{i,j}$ is the {\it visibility} of that region at time, $i$.
+where $b_j$ is the brightness per unit area for region $j$ and $V_{i,j}$ is the {\it visibility} of that region at time, $i$.
 
 
 This model flux has two parts: a visibility and a brightness value. The amoeba determines the brightness values while the visibility values are pre-defined. Both of these apply to a set of $j$ regions. 
@@ -144,7 +144,7 @@ Using $A_{seg} $ and Table~\ref{cases}, a believable box-car transit model is pr
 			VI    &   Planet is partially off the left side of the box. Center is inside of the box                          & $\pi r_p^2 - A_{seg,r}$                     \\ \hline
 			VII   &   Planet is partially off the left side of the box. Center is outside of the box                        & $A_{seg}$                                          \\ \hline
 			VIII  &   Planet is partially off both sides of the box. Center is inside of the box                            & $\pi r_p^2 - A_{seg,r} - A_{seg,l}$ \\ \hline
-			IX    &   Planet is partially off the right side of the box. Center is outside of the box to the right & $A_{seg,l1} - A_{seg,l2}$                \\ \hline
+			IX    &   Planet is partially off the right side of the box. Center is outside of the box to the left & $A_{seg,l1} - A_{seg,l2}$                \\ \hline
 			X     &   Planet is partially off the left side of the box. Center is outside of the box to the right    & $A_{seg,r1} - A_{seg,r2}$               \\ \hline
 		\end{tabular}
 	\end{center}
@@ -168,7 +168,7 @@ To complete the limb darkening model, the average value in one of the regions is
 This works well for limb-darkening determination in each region, but care must be taken when calculating limb darkening for the eclipse. Rather than calculating equations of limb darkening for the eclipse directly as in Mandol \& Agol 2000, the ratio of the limb-darkened eclipsed region to the non-limb-darkened eclipsed region is used. If the number of regions in eclipse is not high enough, a boxy limb-darkening approximation to the transit path is produced using this scheme. This happens because the planet is moving too quickly relative to the surface of the star given the in-transit binning cadence. To fix this, the ratio of the limb-darkened to non-limb-darkened regions is calculated for multiple sub-regions. This gives a finer grain approximation to the real value.
 
 \section{Visibility Calculations of Regions \label{vis}}
-Recall that in order to calculate \fmod, the visibility of each region at a given time step is required. These visibilities are calculated by finding the projected surface area of a sphere for a given set of angles. The basic integral is:
+Recall that in order to calculate \fmod, the visibility of each region at a given time step is required. These visibilities are calculated by finding the projected surface area of a sphere for a given set of angles. The basic integral is the spherical surface integral dotted with the unit vector, $\hat{x}$, along the line-of-sight:
 
 \begin{equation}
 	V_{i,j} = \int_{\phi_1}^{\phi_2} \int_{\theta_1}^{\theta_2} \sin^2{\theta}\cos{\phi}\,\mathrm{d}\theta \, \mathrm{d}\phi
@@ -181,9 +181,19 @@ Recall that in order to calculate \fmod, the visibility of each region at a give
 	\label{angles}
 \end{figure}
 
-Where $\phi_1$, $\phi_2$, $\theta_1$, and $\theta_2$ are shown in Figure~\ref{angles}. For all types of visibilities, $\phi_1$ and $\phi_2$ are set by the number of stripes or boxes defined at the start of the program. The $\theta$ limits, however, will be different.
-The $\theta$ limits for the boxes are set by the impact parameter and the radius of the planet. The limits will be equal to $b \pm R_p + \frac{\pi}{2}$. The addition of the $\frac{\pi}{2}$ term is a result of defining the bottom of the star to be latitude 0. For the visibility of a longitude, $\theta$ will range from 0 to $\pi$. The visibility of a stripe is calculated (in the chi-squared routine) by subtracting the sum of the box visibilities in a given longitude range from the longitude in the same range.
+Where $\phi_1$, $\phi_2$, $\theta_1$, and $\theta_2$ are shown in Figure~\ref{angles}. For all types of visibilities, $\phi_1$ and $\phi_2$ are set by the number of stripes or boxes defined at the start of the program. The $\theta$ limits, however, will be different depending on region type.
+The $\theta$ limits for the boxes are set by the impact parameter and the radius of the planet. The limits will be equal to $(b \pm R_p) + \frac{\pi}{2}$. The addition of $\frac{\pi}{2}$ is necessary when the bottom of the star is defined as latitude 0. For the visibility of a longitude, $\theta$ will range from 0 to $\pi$. The visibility of a stripe is calculated (in the chi-squared routine) by subtracting the sum of the box visibilities in a given longitude range from the longitude in the same range.
 
+\section{Model Flux}
+%Note: This section will be moved out of its current location
+The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called \{it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution report that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones. 
+
+The set of brightness values is optimized by minimizing the chi-squared:
+\begin{equation}
+	\chi^2 = \sum \frac{(\fmod - \fobs)^2}{\sigma_i^2}
+\end{equation}
+
+The Amoeba Algorithm is used to do the actual minimization. The algorithm runs quickly and will always converge given any set of inputs. The largest downside (of most optimization algorithms) is that it cannot distinguish between local and absolute minima.
 
 
 
