@@ -2,5 +2,6 @@
 *.log
 *.synctex*
 *.bib
+*~
 .DS_Store
 old/
