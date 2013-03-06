@@ -31,7 +31,7 @@ light curve, we are able to derive a model for the time evolution of the star's 
 
 The stellar rotation period, $P_{rot}$, is an input parameter into the program 
 along with the orbital and physical properties of the planet, including the
-planet radius relative to the host star, $r_{p}$, the orbital period, $P_{orb}$, etc.   **OTHER INPUTS Need defining?**
+planet radius relative to the host star, $R_{p}$, the orbital period, $P_{orb}$, etc.   **OTHER INPUTS Need defining?**
 The star is assumed to be rotating as a uniform solid body.  In addition, we require the spin-axis of the star   
 to be aligned with the orbital axis of the planet and the planet to be on a circular orbit.  
 %These criteria are both met for our test object, Kepler-17 \cite{}.  }
@@ -47,10 +47,7 @@ When talked about as an ensemble or when the distinction is unimportant, these r
 ++++STOPPED HERE++++
 
 Typically, 
-
 %causing the regions to rotate in and out of view over time.  
-
-
 The surface brightness, $b_j$, of
 each region is held constant 
 
@@ -58,7 +55,7 @@ longitudinal stripes. Additionally, we add a set of boxes that lie along the pat
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\textwidth]{modelGeometry.png}
+	\includegraphics[width=.5\textwidth]{images/modelGeometry.png}
 	\caption{CoRoT brightness map.}
 	\label{CoRoT}
 \end{figure}
@@ -98,7 +95,7 @@ The simplest case in which the planet is entirely contained within a box is:
 The planet can also be partially contained in a box in many ways, shown in Table~\ref{cases}. The sliver of the planet that is not within the box will be calculated and then extended to take care of all of the various cases. To do this, the area of a sector of a circle is found and then the triangle that is formed within it is subtracted. The sector is the combination of the light blue and yellow regions in Figure~\ref{eclipse}.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\textwidth]{figure.png}
+	\includegraphics[width=.5\textwidth]{images/figure.png}
 	\caption{Geometry of eclipse path visibility.}
 	\label{eclipse}
 \end{figure}
@@ -176,7 +173,7 @@ Recall that in order to calculate \fmod, the visibility of each region at a give
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\textwidth]{angles.png}
+	\includegraphics[width=.5\textwidth]{images/angles.png}
 	\caption{Angles.}
 	\label{angles}
 \end{figure}
@@ -184,17 +181,33 @@ Recall that in order to calculate \fmod, the visibility of each region at a give
 Where $\phi_1$, $\phi_2$, $\theta_1$, and $\theta_2$ are shown in Figure~\ref{angles}. For all types of visibilities, $\phi_1$ and $\phi_2$ are set by the number of stripes or boxes defined at the start of the program. The $\theta$ limits, however, will be different depending on region type.
 The $\theta$ limits for the boxes are set by the impact parameter and the radius of the planet. The limits will be equal to $(b \pm R_p) + \frac{\pi}{2}$. The addition of $\frac{\pi}{2}$ is necessary when the bottom of the star is defined as latitude 0. For the visibility of a longitude, $\theta$ will range from 0 to $\pi$. The visibility of a stripe is calculated (in the chi-squared routine) by subtracting the sum of the box visibilities in a given longitude range from the longitude in the same range.
 
-\section{Model Flux}
+\section{Model Flux \label{flux}}
 %Note: This section will be moved out of its current location
-The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called \{it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution report that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones. 
+The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called \{it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution r eport that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones.
 
 The set of brightness values is optimized by minimizing the chi-squared:
 \begin{equation}
 	\chi^2 = \sum \frac{(\fmod - \fobs)^2}{\sigma_i^2}
 \end{equation}
 
-The Amoeba Algorithm is used to do the actual minimization. The algorithm runs quickly and will always converge given any set of inputs. The largest downside (of most optimization algorithms) is that it cannot distinguish between local and absolute minima.
+The Amoeba Algorithm is used to do the actual minimization. The algorithm runs quickly and will always converge given any set of inputs. The largest downside (of most optimization algorithms) is that it cannot distinguish between local and absolute minima. This becomes especially apparent when choosing an initial set of brightness guesses for the simplex structure. Because the average brightness of the star is 1.0, the initial conditions for the simplex structure are $n_{sb} + 1$ brightness sets of $n_{sb}$ values where $n_{sb} = n_{stripes} + n_{boxes}$ and every element is in the simplex is 1.0. A different (orthogonal) basis vector $e_i$ times a scale factor, $s$, is then added to each of the $n_{sb} + 1$ sets. When the scale factor is too large, the Amoeba converges on answers that are not likely real. When the scale factor is too small or non-existent, the Amoeba does not do any work as the relative difference between successive $\chi^2$ calculations is small despite having not converged on an actual minimum.
+
+\section{Validating our model \label{validation}}
+To prove that the model behaves as expected, model light curves are generated by a set of brightness values.
+\subsection{What is variable? \label{variable}}
+After the models are made, the only things that vary for the reproduction is the number of boxes and stripes and the binning cadences. The number of boxes and stripes are set to six and eighteen respectively.  %This section isn't really a section....
+
+%Give a description of the parameters that we still can mess with. For example, the number of stripes, number of boxes, and binning cadences both in and out-of- transit.
+\subsection{Producing the model light curves \label{modelLC}}
+To produce the model light curves, the model flux $\fmod = V_{i,j} b_j$ was used. The visibility calculations are the same as described in section~\ref{vis}. Rather than running the Amoeba algorithm to determine a best fit to an existing light curve, a random set of brightness guesses is used to produce a new light curve. The light curves that were used to test the code had stellar and planetary parameters similar to that of Kepler 17. $P_{rot}$, $P_{orb}$, $R_p$, orbital separation, limb darkening (temperature), and transit width are all identical to the Kepler 17 system. The light curves were produced using 6 stripes and 18 boxes. To simulate spots, certain regions would be darker than the default brightness value of 1.0. When the light curves are produced, there is no noise. To remedy this, a simple python script generates Gaussian noise based on a Kepler-Magnitude input. The noise for these models was similar to a 12th magnitude Kepler star.
 
 
+
+
+%Describes the process of generating a model light curve and how, in our case, it was intrinsically linked to the stellar and planetary parameters of Kepler 17. It should briefly mention that I use a python script to generate Gaussian noise based on Kepler magnitude noise. It should also outline the list of spot models that we tried and our motivation for doing so.
+\subsection{Testing Complexity \label{complexity}}
+The ability of the program to solve for brightness values has only been tested in two parameter spaces, complexity of the spots and noise of the light curve. The noise of the curve is generated by a python script based on Kepler Magnitude noises. Models were tested for a noiseless and 12th magnitude star. There is no noticeable difference between these.
+The complexity of the spots is determined by the number of regions that vary from the default brightness value of 1.0. The model has been tested on 10 different spot configurations. These are one box, one box and one stripe, two boxes, two boxes and one stripe, two boxes and two stripes, three boxes and one stripe, three boxes and two stripes, three boxes and three stripes, four boxes and three stripes, all boxes randomly and two stripes, and all regions randomly darkened.
+\subsection{Results \label{results}}
 
 \end{document}
