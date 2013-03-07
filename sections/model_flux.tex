@@ -1,16 +1,8 @@
-\externaldocument{setup_and_terminology.tex}
-\externaldocument{transiting_planet_model.tex}
-\externaldocument{limb_darkening.tex}
-\externaldocument{visibility.tex}
-\externaldocument{model_flux.tex}
-\externaldocument{model_validation.tex}
-\externaldocument{model_lightcurves.tex}
-\externaldocument{complexity.tex}
-\externaldocument{results.tex}
+\externaldocument{tech_eclipse_text}
 
 \section{Model Flux \label{flux}}
 %Note: This section will be moved out of its current location
-The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called \{it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution r eport that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones.
+The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called {\it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution r eport that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones.
 
 The set of brightness values is optimized by minimizing the chi-squared:
 \begin{equation}
