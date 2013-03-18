@@ -1,6 +1,12 @@
 \externaldocument{tech_eclipse_text}
 
 \subsection{Producing the model light curves \label{modelLC}}
-To produce the model light curves, the model flux $\fmod = V_{i,j} b_j$ was used. The visibility calculations are the same as described in section~\ref{vis}. Rather than running the Amoeba algorithm to determine a best fit to an existing light curve, a random set of brightness guesses is used to produce a new light curve. The light curves that were used to test the code had stellar and planetary parameters similar to that of Kepler 17. $P_{rot}$, $P_{orb}$, $R_p$, orbital separation, limb darkening (temperature), and transit width are all identical to the Kepler 17 system. The light curves were produced using 6 stripes and 18 boxes. To simulate spots, certain regions are darkened more than the default brightness value of 1.0. When the light curves are produced, there is no noise. To remedy this, a simple python script generates Gaussian noise based on a Kepler-Magnitude input. The noise for these models was based off of error counts similar to a 12th magnitude Kepler star.
+To produce the model light curves, the model flux $\fmod = V_{i,j} b_j$ was used. The visibility calculations are the same as described in section~\ref{vis}. Rather than running the Amoeba algorithm to determine a best fit to an existing light curve, a predetermined set of brightness guesses $B = \{b_1, b_2, ..., b_j\}$ is used to produce a new light curve. The light curves that were used to test the code had stellar and planetary parameters similar to that of Kepler 17. $P_{rot}$, $P_{orb}$, $R_p$, orbital separation, limb darkening (temperature), and transit width are all identical to the Kepler 17 system. The light curves were produced using 6 stripes and 18 boxes. To simulate spots, certain regions are darkened more than the default brightness value of 1.0. When the light curves are produced, there is no noise. To remedy this, a simple python script generates Gaussian noise based on a Kepler-Magnitude input. 
+\begin{figure}
+	\centering
+	\includegraphics[width=.5\textwidth]{images/noise.png}
+	\caption{Comparison of noise of models.}
+	\label{noise_comp}
+\end{figure}
 
-%Describes the process of generating a model light curve and how, in our case, it was intrinsically linked to the stellar and planetary parameters of Kepler 17. It should briefly mention that I use a python script to generate Gaussian noise based on Kepler magnitude noise. It should also outline the list of spot models that we tried and our motivation for doing so.
+The noise for these models was based off of error counts similar to a given magnitude Kepler star. Our tests included models with no noise, simulated 12th magnitude noise, and simulated 14th magnitude noise. Figure~\ref{noise_comp} shows a {\it window} of our model light curve with the three levels of noise for comparison.
