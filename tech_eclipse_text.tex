@@ -1,6 +1,6 @@
 \documentclass[iop]{emulateapj}
 \usepackage{graphicx,pdfpages,array,amsmath}
-\usepackage{xr}
+\usepackage{xr,natbib}
 
 \externaldocument{sections/setup_and_terminology}
 \externaldocument{sections/transiting_planet_model}
@@ -11,6 +11,7 @@
 \externaldocument{sections/model_lightcurves}
 \externaldocument{sections/complexity}
 \externaldocument{sections/results}
+\externaldocument{bibliography_astro}
 
 \newcommand{\fmod}{\mbox{$f_{mod,i}$}}
 \newcommand{\chisq}{\mbox{$\chi^2$}}
@@ -30,6 +31,17 @@ pass
 \end{abstract}
 \maketitle
 
+\bibliographystyle{plainnat}
+\setcitestyle{author year,round,semicolon,aysep={}}
+
+\linespread{0.9}
+\selectfont
+
+\setcounter{tocdepth}{2}
+\addtocounter{page}{0}
+
+\clearpage
+
 % INTRO
 %The program is designed to model exhibit variability 
 %in their light curve due to starspots rotating in and out of view on the surface of the star as
@@ -41,13 +53,13 @@ pass
 
 \input{sections/setup_and_terminology.tex}
 \vspace{9mm}
-\input{sections/model_flux.tex}
-\vspace{9mm}
 \input{sections/visibility.tex}
 \vspace{9mm}
 \input{sections/transiting_planet_model.tex}
 \vspace{9mm}
 \input{sections/limb_darkening.tex}
+\vspace{9mm}
+\input{sections/model_flux.tex}
 \vspace{9mm}
 \input{sections/model_validation.tex}
 \vspace{9mm}
@@ -57,5 +69,9 @@ pass
 \vspace{9mm}
 \input{sections/results.tex}
 \vspace{9mm}
+
+
+\small
+\bibliography{bibliography_astro}{}
 
 \end{document}
