@@ -1,12 +1,30 @@
 \externaldocument{tech_eclipse_text}
 
 \subsection{Producing the model light curves \label{modelLC}}
-To produce the model light curves, the model flux $\fmod = V_{i,j} b_j$ was used. The visibility calculations are the same as described in section~\ref{vis}. Rather than running the Amoeba algorithm to determine a best fit to an existing light curve, a predetermined set of brightness guesses $B = \{b_1, b_2, ..., b_j\}$ is used to produce a new light curve. The light curves that were used to test the code had stellar and planetary parameters similar to that of Kepler 17. $P_{rot}$, $P_{orb}$, $R_p$, orbital separation, limb darkening (temperature), and transit width are all identical to the Kepler 17 system. The light curves were produced using 6 stripes and 18 boxes. To simulate spots, certain regions are darkened more than the default brightness value of 1.0. When the light curves are produced, there is no noise. To remedy this, a simple python script generates Gaussian noise based on a Kepler-Magnitude input. 
+To produce the synthetic light curves, the model flux $\fmod = V_{i,j} b_j$ was used. The flux is integrated at each time step over all of the regions whose visibility calculations are the same as described in section~\ref{vis}. A predetermined set of brightness guesses $B = \{b_1, b_2, ..., b_{nboxes}, b_{stripes}, ..., b_j\}$ is used to produce a new light curve. This set of brightness values is constant over then entire period of data in question (usually a month of Kepler short-cadence data).
+
+To simulate spots in the synthetic light curves, certain individual regions are darkened. The average brightness of the undarkened star should be 1.0 everywhere. A typical spot is anywhere from 500 to 1000 degrees cooler than the stellar surface which corresponds to about .67 the brightness of an average part of the star \citep{Walkowicz2013}. The regions in our synthetic systems are designed to approximate a star with at most 30\% spot coverage. Because of this, the brightness values in the regions vary from 1.0 down to .88 in the boxes (higher percentage of spot coverage) and down to .91 in the stripes. There are currently 11 synthetic light curves that are tested with our system, but only a subset will be detailed in the paper.
+
+The light curves that were used to test the code had stellar and planetary parameters similar to that of Kepler 17. $P_{rot}$, $P_{orb}$, $R_p$, orbital separation, limb darkening (temperature), and transit width are all identical to the Kepler 17 system. When the light curves are produced, there is no noise. To remedy this, a simple python script generates Gaussian noise based on a Kepler-Magnitude input. 
+
 \begin{figure}
 	\centering
 	\includegraphics[width=.5\textwidth]{images/noise.png}
-	\caption{Comparison of noise of models.}
+	\caption{Comparison of noise of models. Blue is noiseless, Red is 12th magnitude, and Green is 14th magnitude Gaussian Noise.}
 	\label{noise_comp}
 \end{figure}
 
-The noise for these models was based off of error counts similar to a given magnitude Kepler star. Our tests included models with no noise, simulated 12th magnitude noise, and simulated 14th magnitude noise. Figure~\ref{noise_comp} shows a {\it window} of our model light curve with the three levels of noise for comparison.
+The noise for these models was based off of error counts similar to a given magnitude Kepler star. Our tests included models with no noise, simulated 12th magnitude noise (441 counts per million), and simulated 14th magnitude noise (1620 counts per million) \citep{noiseCounts}. Figure~\ref{noise_comp} shows a {\it window} of our model light curve with the three levels of noise for comparison.
+
+
+
+%New Order:
+%1) Our simulated star has X Stripes and Y Boxes.
+%2) Describe the darkening process. And give the values between .88 and 1.0. Justify the numbers that we used in the simulations. Corresponds to spot temperatures that correspond to 500 to 1000 degrees cooler than the surface of the star ****Verify that temperature number. Mention that non-modified b-values are set to 1.0
+%	Insert: Table of different simulations
+%		Requires coming up with a numbering scheme to generate said table
+%3) Properties of star are similar to Kepler 17: list it. Go in a table.
+%4) Reword the actual production to use these brightnesses described above and the visibilities instead of how it actually works in the code.
+%5) Total duration of one month - similar to one month of short cadence Kepler data at the same time steps of Kepler 17
+%6) No evolution in the b values over this time
+%7) Add noise to the light curve. Give the sigma values corresponding to 12th and 14th.
