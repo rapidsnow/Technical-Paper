@@ -1,7 +1,12 @@
-\documentclass[iop]{emulateapj}
+\documentclass{aastex}
 \usepackage{graphicx,pdfpages,array,amsmath}
 \usepackage{xr,natbib}
+\usepackage{multirow}
 
+\usepackage{epstopdf} 
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+
+\externaldocument{sections/introduction}
 \externaldocument{sections/setup_and_terminology}
 \externaldocument{sections/transiting_planet_model}
 \externaldocument{sections/limb_darkening}
@@ -11,6 +16,8 @@
 \externaldocument{sections/model_lightcurves}
 \externaldocument{sections/complexity}
 \externaldocument{sections/results}
+\externaldocument{sections/K17}
+\externaldocument{sections/appendix}
 \externaldocument{bibliography_astro}
 
 \newcommand{\fmod}{\mbox{$f_{mod,i}$}}
@@ -50,27 +57,36 @@ pass
 %Section 1 Model, then subsections until validating the model
 %Put in all of the figures
 
-
+\input{sections/introduction.tex}
+\vspace{9mm}
 \input{sections/setup_and_terminology.tex}
 \vspace{9mm}
 \input{sections/visibility.tex}
 \vspace{9mm}
-\input{sections/transiting_planet_model.tex}
-\vspace{9mm}
-\input{sections/limb_darkening.tex}
-\vspace{9mm}
+
+%\input{sections/transiting_planet_model.tex}
+%\vspace{9mm}
+%\input{sections/limb_darkening.tex}
+%\vspace{9mm}
+
 \input{sections/model_flux.tex}
 \vspace{9mm}
 \input{sections/model_validation.tex}
 \vspace{9mm}
-\input{sections/model_lightcurves.tex}
-\vspace{9mm}
+
+%\input{sections/model_lightcurves.tex}
+%\vspace{9mm}
+
 \input{sections/complexity.tex}
 \vspace{9mm}
 \input{sections/results.tex}
 \vspace{9mm}
-\input{sections/appendix.tex}
 
+%\input{sections/K17.tex}
+%\vspace{9mm}
+
+\input{sections/appendix.tex}
+\vspace{9mm}
 
 \small
 \clearpage

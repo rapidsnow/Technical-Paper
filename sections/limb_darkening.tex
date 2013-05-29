@@ -1,19 +1,19 @@
 \externaldocument{tech_eclipse_text}
 
 \subsection{Limb Darkening}
-To actually calculate the limb-darkening, a quadratic limb-darkening law is used \citep{Claret2004}.
+To calculate the limb-darkening, a quadratic limb-darkening law is used \citep{Claret2004}.
 \begin{equation}
    \frac{I(\psi)}{I(0)} = 1 - c_1 (1 - \mu) - c_2 (1 - \mu)^2
 \end{equation}
-Here, $\mu$ is the cosine of the angle between the line of sight and the normal at the point at which you are trying to calculate the limb darkening. Because stars are so distant, this can be approximated as $\hat{x} = R^* \sin{\theta}\cos{\phi}$, but $R^{*}$ is defined as 1.0 throughout all calculations.
+Here, $\mu$ is the cosine of the angle between the line of sight and the normal at the point at which you are trying to calculate the limb darkening. Because stars are so distant, this can be approximated as $\hat{x} = R^* \sin{\theta}\cos{\phi}$. $R^{*}$ is defined as 1.0 throughout all calculations and can be dropped from future equations.
 
 To complete the limb darkening model, the average value in one of the regions is calculated at every timestep. This is done analytically from the integral:
 
 \begin{equation}
 \begin{split}
-    \left(\frac{I(\psi)}{I(0)}\right)_{ave} =&  \frac{1}{V_{i,j}} \int_{\phi_1}^{\phi_2}  \int_{\theta_1}^{\theta_2}  (1 - c_1 (1 - \sin{\theta}\cos{\phi}) \\ &- c_2 (1 - \sin{\theta}\cos{\phi})^2) \sin{\theta}\cos{\phi}\,\mathrm{d}\theta \, \mathrm{d}\phi
+    \left(\frac{I(\psi)}{I(0)}\right)_{ave} =&  \frac{1}{V_{i,j}} \int_{\phi_1}^{\phi_2}  \int_{\theta_1}^{\theta_2}  (1 - c_1 (1 - \sin{\theta}\cos{\phi}) \\ &- c_2 (1 - \sin{\theta}\cos{\phi})^2) \sin{\theta}^2\cos{\phi}\,\mathrm{d}\theta \, \mathrm{d}\phi
 \end{split}
 \end{equation}
 
-This works well for limb-darkening determination in each region, but care must be taken when calculating limb darkening for the eclipse. Rather than calculating equations of limb darkening for the eclipse directly as in Mandel \& Agol 2002 \citep{MandelAgol2002}, the ratio of the limb-darkened eclipsed region to the non-limb-darkened eclipsed region is used. If the number of regions in eclipse is not high enough, a boxy limb-darkening approximation to the transit path is produced using this scheme. This happens because the planet is moving too quickly relative to the surface of the star given the in-transit binning cadence. To fix this, the ratio of the limb-darkened to non-limb-darkened regions is calculated for multiple sub-regions. This gives a finer grain approximation to the real value.
+This works well for limb-darkening determination in each region, but care must be taken when calculating limb darkening for the eclipse. Rather than calculating equations of limb darkening for the eclipse directly as in \citet{MandelAgol2002}, the ratio of the limb-darkened eclipsed region to the non-limb-darkened eclipsed region is used. If the number of regions in eclipse is not high enough, a boxy limb-darkening approximation to the transit path is produced using this scheme. This happens because the planet is moving too quickly relative to the surface of the star given the in-transit binning cadence. To fix this, the ratio of the limb-darkened to non-limb-darkened regions is calculated for multiple sub-regions. This gives a finer grain approximation to the real value.
 

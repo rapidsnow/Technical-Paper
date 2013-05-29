@@ -1,12 +1,26 @@
 \externaldocument{tech_eclipse_text}
 
-\subsection{Model Flux \label{flux}}
-%Note: This section will be moved out of its current location
-The flux of the star at any given time $i$ is given by $\fmod = \sum{V_{i,j} b_{j}}$. Each region on the star has some visibility value $V_{i,j}$ that varies with time. These visibility values are all governed by the amount of projected area that is seen by the observer over time and can be calculated via an analytical integral. Finding the brightness values, $b_j$, is the goal of the program. For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called {\it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution r eport that it occurs on the order of 10-30 days. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones.
-
-The set of brightness values is optimized by minimizing the chi-squared:
+\subsection{Solving for the brightness values \label{flux}}
+The goal of the program is to identify a realistic brightness distribution of the stellar surface. We employ a standard chi-squared minimization routine, the Amoeba Algorithm, to find the optimum brightness values, $b_j$, that, when multiplied by the visibilities as described above, produces a model light curve according to that matches the observed data. This model light curve is produced according to Equation~\ref{model_flux}. The Amoeba Algorithm is a minimization tool that works well for small numbers of dimensions (regions in this case) and which will always converge to some minima (although not necessarily absolute) \citep{NR}. Given an initial set of brightness values given pre-defined visibilities as described in section~\ref{vis}. Both of these, brightness values and visibilities, apply to a set of $j = n_{boxes} + n{stripes}$ regions. The planet will occlude only the boxes and will do so only during a transit. The longitudes' brightness values are defined as:
 \begin{equation}
 	\chi^2 = \sum \frac{(\fmod - \fobs)^2}{\sigma_i^2}
 \end{equation}
 
-The Amoeba Algorithm is used to do the actual minimization. The algorithm runs quickly and will always converge given any set of inputs. The largest downside (of most optimization algorithms) is that it cannot distinguish between local and absolute minima. This becomes especially apparent when choosing an initial set of brightness guesses for the simplex structure. Because the average brightness of the star is 1.0, the initial conditions for the simplex structure are $n_{sb} + 1$ brightness sets of $n_{sb}$ values where $n_{sb} = n_{stripes} + n_{boxes}$ and every element is in the simplex is 1.0. A different (orthogonal) basis vector $e_i$ times a scale factor, $s$, is then added to each of the $n_{sb} + 1$ sets. When the scale factor is too large, the Amoeba converges on answers that are not likely real. When the scale factor is too small or non-existent, the Amoeba does not do any work as the relative difference between successive $\chi^2$ calculations is small despite having not converged on an actual minimum.
+
+
+For a given set of data the brightness values cannot change using our technique. To remedy this, each month (or quarter) of data is divided into smaller intervals called {\it windows}. By moving the start and end times of the windows by small amounts, information about the evolution of starspots can be inferred. Previous estimates on the timescale of starspot evolution report that it occurs on the order of 10-30 days ***********cite someone*******. This works well with the model described here. The model does a better job of fitting smaller sections of data than larger ones. *******Note about striping*******
+
+
+The Amoeba Algorithm is used to do the actual minimization. The algorithm runs quickly and will always converge given any set of inputs. The largest downside (of most optimization algorithms) is that it cannot distinguish between local and absolute minima. This becomes especially apparent when choosing an initial set of brightness guesses for the simplex structure. Because the average brightness of the star is 1.0, the initial conditions for the simplex structure are $n_{sb} + 1$ brightness sets of $n_{sb}$ values where $n_{sb} = n_{stripes} + n_{boxes}$ and every element is in the simplex is 1.0. A different (orthogonal) basis vector $e_i$ times a scale factor, $s$, is then added to each of the $n_{sb} + 1$ sets. When the scale factor is too large, the Amoeba converges on answers that are not likely real. When the scale factor is too small or non-existent, the Amoeba is more likely to vary all regions in order to converge to a solution rather than just the regions that differ from the average value.
+
+
+
+
+\begin{equation}
+%Z_j = \frac{S_j - \frac{c}{q} \sum_{j=1}^{q}B_j}{1- c}
+S_j = Z_j (1 - c) + \frac{c}{q} \sum_{j=1}^{q}B_j
+\label{z_val}
+\end{equation}
+%Changed the above equation... switched Z and S values.
+
+Where $q$ is the ratio of $n_{boxes}$ to $n_{stripes}$ and $c$ is the ratio of the total eclipsed area to the non-eclipsed area. $c$ can be calculated by the same set of integrals that will be used for the visibilities. The Amoeba algorithm is given the set of box and longitude visibilites $\{b_1, ..., b_j, z_1, ..., z_n\}$. When the planet is not transiting, the only information available is about the total longitudinal brightness information. Within the chi-squared call of the Amoeba algorithm, the box and stripe visibilities and brightnesses are calculated as a way to blend the parameters together and get information about the overall longitude. This allows the use of boxes and stripes whose sum can be thought of as the longitude values in the Amoeba while still getting information about the boxes and the longitudes independently. This is called parameter interdependence. This appears to encourage the Amoeba Algorithm to navigate to a better local minima than if this process of creating parameter interdependence and using optimal variables were omitted. 

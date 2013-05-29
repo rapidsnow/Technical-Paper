@@ -1,14 +1,48 @@
 \externaldocument{tech_eclipse_text}
 
 \section{Validating our model \label{validation}}
-Extracting a two dimensional brightness map from a one dimensional light curve can result in degenerate solutions.  There is no way of knowing {\it a priori} what the brightness values of a real system should be at any given time and it is therefor impossible to verify our model with real data. To remedy this, we produce synthetic light curves using \fmod defined in Section~\ref{flux}. This technique will be described in greater detail below. 
+%Things that were in the version that got lost:
+%	Rework first two sentences
+%	3) Explain that we chose 11/22 as per the section before this
 
-While trying to verify the models, the only things that can vary for the reproduction is the number of boxes and stripes and the binning cadences. The number of stripes is chosen doing a sans-transit fit to the light curve with an increasing number of stripes until the chi-squared stops becoming significantly better. The number of boxes is chosen by calculating the relative area of the star that the planet occludes per time step. To resolve at a small scale, we want the planet to have three time steps in each box before moving on to the next one \citep{Huber2009}. Using these metrics, we chose the number of boxes and stripes for our system to be 11 and 22.  The in and out-of-transit binning cadences are chosen to mimic a real system. Because so many points exist out of transit and the overall trends tend to exist longer term a low cadence is desired for out-of-transit binning. For these example solves, the out-of-transit binning cadence is 95 Kepler short-cadence time steps per bin. The in-transit binning cadence is set at a higher frequency in order to remain sensitive to small scale variations in the light curves. For these example solves, the in-transit binning cadence is set to three Kepler short-cadence time steps (58.85 seconds) per bin.
 
-%1) Choose a number of stripes and boxes. Define the tuple of boxes and stripes - Done
-%2) To simulate spots, we darken certain regions. The average brightness of an undarkened star is 1.0 (Note, our synthetic models might actually be the issue. They are an unphysical system) - Done
-%3) We use Kepler-17 parameters (b, a, epoch, Prot, Rp, orb_per, etc.).
-%4) Rotate our simulated star and generate an integrated flux measurement at each time point according to \fmod using the visibilities produced by the C code in section~\ref{vis} and a predefined brightness set.
-%5) Total duration of one set of Kepler data (one month).
-%6) There is no evolution in the b values during this time.
-%7) Add noise to the light curve. Give values for sigma and link to the webpage.
+Extracting a two dimensional brightness map by fitting a model to a one dimensional light curve can result in degenerate solutions.  There is no way of knowing what the brightness values of a real system should be {\it a priori}. To remedy this, we produce synthetic light curves using our definition of model flux, a set of visibilities, and a known set of input brightness values. The average brightness on the surface of the star is defined to be 1.0. This is the default value for this known set of input brightness values. To simulate starspots, we darken regions by giving them a brightness value of less than 1.0. For example, if we want to simulate a group of spots in only one {\it box}, we would set all of the input brightness values to 1.0 except for one {\it box} that has the value 0.90. One the spots are darkened, the flux is then integrated at each time step over all of the {\it regions}. There are currently 11 synthetic light curves with different spot configurations that we test with our system, but only a subset will be detailed in the paper.
+
+\begin{table}
+\begin{center}
+  \begin{tabular}{l | l}
+    Parameter Name & Value \\ \hline
+    Rotation Period & 11.89\\
+	$\frac{R_p}{R^{*}}$ & 0.129530 \\
+	Limb Darkening Coefficient 1 & 0.4282\\
+	Limb Darkening Coefficient 2 & 0.2514\\
+	Orbital Period & 1.485711\\
+	Orbital Epoch & 352.678035\\
+	Orbital Separation & 5.670\\
+	Impact Parameter & 0.01800\\
+	Transit Duration & 0.094775\\
+  \end{tabular}
+\end{center}
+\label{models}
+\end{table}
+
+We want our synthetically produced light curves to mimic light curves from real systems. To ensure that this happens, we adopt the stellar, planetary, and orbital properties directly from the Kepler-17 system provided in \citet{Borucki????} ****Cite the correct parameter place and shown in Table~\ref{parameters}. These parameters are then used to create the visibilities, as described in Section~\ref{visibilities}, and determine an appropriate number of stripes and boxes for the system as described in Sections~\ref{visibilities} and ~\ref{flux}. For the Kepler-17 system and for our synthetic systems, we choose the number of {\it stripes} and {\it boxes} to be 11 and 22 respectively.
+
+A typical spot on a real star is anywhere from 500 to 1000 degrees cooler than the rest of the stellar surface. This corresponds to about 0.67 the brightness of an average part of the star in the starspot \citep{Walkowicz2013}. The {\it regions} in our synthetic systems are designed to imitate a real star with at most 30\% spot coverage. Therefore, the brightness values in our {\it regions} vary from 1.0 down to 0.88 in the {\it boxes} (higher percentage of spot coverage) and down to 0.91 in the {\it stripes}. 
+
+When the light curves are produced in this way, they do not have any noise. This is clearly a bad imitation of a real system. We introduce Gaussian noise with standard deviations based on the average photon error counts provided in the table at \citet{noise_levels_table}****Noise level table. We try to recover the brightness values for noiseless, 12th magnitude noise, and 14th magnitude noise synthetic light curves. We show examples of the same light curve with different levels of noise in Figure~\ref{noise_comp}. Kepler-17 itself is a fourteenth magnitude star.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.5\textwidth]{images/noise_levels.eps}
+	\caption{Comparison of noise of models. The noise for these models was based off of error counts similar to a given magnitude Kepler star. Our tests included models with no noise in blue, simulated 12th magnitude noise (441 counts per million) in red, and simulated 14th magnitude noise (1620 counts per million) in green \citep{noiseCounts}.}
+	\label{noise_comp}
+\end{figure}
+
+The in and out-of-transit binning cadences also mimic how we would solve for a real system. Because so many points exist out of transit and the trends from larger, possibly polar spots tend to have longer timescales, a low binning cadence is desired for out-of-transit binning. For these example solves, the out-of-transit binning cadence is 95 Kepler short-cadence time steps (58.85 seconds) per bin. The in-transit binning cadence is set at a higher frequency in order to remain sensitive to small scale variations in the light curves due to small scale starspots in the path of the planet. For these example solves, the in-transit binning cadence is set to three Kepler short-cadence time steps per bin.
+
+Our predetermined set of brightness guesses $B = \{b_1, b_2, ..., b_{nboxes}, b_{stripes}, ..., b_j\}$ remains constant over then entire period of data in question (usually a month of Kepler short-cadence data). This is not a good approximation to real data as it does not include any notion of starspot evolution. However, over the short period of each {\it window} the evolution is not a noticeable factor, and it makes more sense to produce the lightcurves in this way.
+
+
+
+%While trying to verify the models, the only things that can vary for the reproduction is the number of boxes and stripes and the binning cadences. The number of stripes is chosen doing a sans-transit fit to the light curve with an increasing number of stripes until the chi-squared stops becoming significantly better. The number of boxes is chosen by calculating the relative area of the star that the planet occludes per time step. To resolve at a small scale, we want the planet to have three time steps in each box before moving on to the next one \citep{Huber2009}. Using these metrics, we chose the number of boxes and stripes for our system to be 11 and 22. 
